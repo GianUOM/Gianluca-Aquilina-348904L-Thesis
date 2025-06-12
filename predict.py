@@ -14,7 +14,7 @@ CLASSES_LIST = ["jump-shot", "dribbling", "shot", "defence", "passing"]
 
 # --- Load trained model ---
 model = load_model(MODEL_PATH)
-print("✅ Loaded LRCN model!")
+print("Loaded LRCN model!")
 
 # --- Frame extraction function ---
 def frames_extraction(video_path):
@@ -64,4 +64,4 @@ for file_name in tqdm(sorted(os.listdir(SEQUENCES_DIR)), desc="Predicting action
 
 df = pd.DataFrame(results)
 df.to_csv("predicted_actions.csv", index=False)
-print("✅ Prediction complete! Saved to 'predicted_actions.csv'")
+print("Prediction complete! Saved to 'predicted_actions.csv'")
