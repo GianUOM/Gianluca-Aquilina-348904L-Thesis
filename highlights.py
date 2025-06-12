@@ -51,4 +51,4 @@ for _, row in highlight_clips.iterrows():
 
 cap.release()
 out.release()
-print(f"✅ Filtered jump-shot highlight saved to: {OUTPUT_PATH}")
+print(f"Filtered jump-shot highlight saved to: {OUTPUT_PATH}")
