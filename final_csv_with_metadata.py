@@ -9,7 +9,7 @@ try:
     predictions_df = pd.read_csv(PREDICTIONS_CSV)
     metadata_df = pd.read_csv(METADATA_CSV)
 except FileNotFoundError as e:
-    print(f"❌ Error: {e}")
+    print(f"Error: {e}")
     exit()
 
 # --- Merge by sequence_file ---
@@ -23,4 +23,4 @@ merged_df = merged_df[ordered_columns]
 
 # --- Save to CSV ---
 merged_df.to_csv(OUTPUT_CSV, index=False)
-print(f"✅ Final merged predictions with metadata saved to: {OUTPUT_CSV}")
+print(f"Final merged predictions with metadata saved to: {OUTPUT_CSV}")
