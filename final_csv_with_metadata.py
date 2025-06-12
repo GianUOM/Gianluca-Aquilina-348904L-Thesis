@@ -1,6 +1,5 @@
 import pandas as pd
 
-# --- Paths to input CSVs ---
 PREDICTIONS_CSV = "predicted_actions.csv"
 METADATA_CSV = "sequence_metadata.csv"
 OUTPUT_CSV = "final_predictions_with_metadata.csv"
@@ -16,7 +15,6 @@ except FileNotFoundError as e:
 # --- Merge by sequence_file ---
 merged_df = pd.merge(predictions_df, metadata_df, on="sequence_file", how="inner")
 
-# --- Optional: Reorder columns for clarity ---
 ordered_columns = [
     "sequence_file", "track_id", "predicted_action", "confidence",
     "start_frame", "end_frame", "x_min", "y_min", "x_max", "y_max"
