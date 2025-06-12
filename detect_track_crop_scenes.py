@@ -7,7 +7,6 @@ from ultralytics import YOLO
 from yolox.tracker.byte_tracker import BYTETracker
 from tqdm import tqdm
 
-# --- Configuration ---
 YOLO_WEIGHTS_PATH = "handball_project2/handball_model/weights/best.pt"
 VIDEO_PATH = "trim.mp4"
 SEQUENCES_SAVE_DIR = "game_sequences"
@@ -23,12 +22,11 @@ FRAME_RATE = 30
 PLAYER_CLASS_ID = 2
 BALL_CLASS_ID = 0
 
-# --- Create folder ---
 os.makedirs(SEQUENCES_SAVE_DIR, exist_ok=True)
 
 # --- Load YOLOv12 model ---
 yolo_model = YOLO(YOLO_WEIGHTS_PATH)
-print("✅ YOLOv12 model loaded!")
+print("YOLOv12 model loaded!")
 
 # --- ByteTrack Setup ---
 class ArgsStub:
@@ -41,7 +39,6 @@ class ArgsStub:
 
 tracker = BYTETracker(args=ArgsStub(), frame_rate=FRAME_RATE)
 
-# --- Helper to detect players ---
 def detect_objects(frame):
     results = yolo_model.predict(frame, imgsz=IMG_SIZE, conf=CONFIDENCE_THRESHOLD, device='cpu', verbose=False)
     player_detections = []
@@ -61,14 +58,13 @@ def detect_objects(frame):
 
     return (np.array(player_detections) if player_detections else np.empty((0, 6)))
 
-# --- Process video ---
 cap = cv2.VideoCapture(VIDEO_PATH)
 if not cap.isOpened():
-    print(f"❌ Could not open video {VIDEO_PATH}")
+    print(f"Could not open video {VIDEO_PATH}")
     exit()
 
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-print(f"📹 Total frames in video: {total_frames}")
+print(f"Total frames in video: {total_frames}")
 
 frame_idx = 0
 memory = {}
@@ -97,7 +93,7 @@ for _ in tqdm(range(total_frames), desc="Processing video"):
 cap.release()
 
 # --- Extract only top-motion player per window ---
-print("🎞️ Extracting most active player sequences (1 per segment)...")
+print("Extracting most active player sequences (1 per segment)...")
 sequence_counter = 0
 all_metadata = []
 
@@ -182,6 +178,6 @@ for start_frame, data in segments_by_start.items():
 df_meta = pd.DataFrame(all_metadata)
 df_meta.to_csv("sequence_metadata.csv", index=False)
 
-print(f"✅ Saved {sequence_counter} top-motion sequences and updated metadata.")
+print(f"Saved {sequence_counter} top-motion sequences and updated metadata.")
 
 
