@@ -6,17 +6,17 @@ from tensorflow.keras.models import load_model
 from tqdm import tqdm
 
 # --- Configuration ---
-SEQUENCES_DIR = "game_sequences"  # Folder where cropped .avi files exist
-MODEL_PATH = "LRCN_model__Date_Time_2025_04_29__21_17_47__Loss_0.39231064915657043__Accuracy_0.8394160866737366.h5"      # Trained LRCN model path
+SEQUENCES_DIR = "game_sequences" 
+MODEL_PATH = "LRCN_model__Date_Time_2025_04_29__21_17_47__Loss_0.39231064915657043__Accuracy_0.8394160866737366.h5"     
 SEQUENCE_LENGTH = 20
-IMAGE_HEIGHT, IMAGE_WIDTH = 64, 64  # Match your model input size
+IMAGE_HEIGHT, IMAGE_WIDTH = 64, 64  
 CLASSES_LIST = ["jump-shot", "dribbling", "shot", "defence", "passing"]
 
 # --- Load trained model ---
 model = load_model(MODEL_PATH)
 print("✅ Loaded LRCN model!")
 
-# --- Frame extraction function (from your action recognition preprocessing) ---
+# --- Frame extraction function ---
 def frames_extraction(video_path):
     frames_list = []
 
@@ -48,9 +48,9 @@ for file_name in tqdm(sorted(os.listdir(SEQUENCES_DIR)), desc="Predicting action
     frames = frames_extraction(video_path)
 
     if len(frames) != SEQUENCE_LENGTH:
-        continue  # skip incomplete sequences
+        continue  
 
-    input_sequence = np.expand_dims(np.array(frames), axis=0)  # (1, 20, 64, 64, 3)
+    input_sequence = np.expand_dims(np.array(frames), axis=0) 
     predictions = model.predict(input_sequence, verbose=0)
     predicted_index = np.argmax(predictions)
     predicted_class = CLASSES_LIST[predicted_index]
@@ -62,7 +62,6 @@ for file_name in tqdm(sorted(os.listdir(SEQUENCES_DIR)), desc="Predicting action
         "confidence": confidence
     })
 
-# --- Save to CSV ---
 df = pd.DataFrame(results)
 df.to_csv("predicted_actions.csv", index=False)
 print("✅ Prediction complete! Saved to 'predicted_actions.csv'")
